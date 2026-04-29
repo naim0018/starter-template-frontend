@@ -57,7 +57,7 @@ export const Workflow = ({ id }: { id?: string }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="glass p-8 rounded-lg relative z-10 hover:border-white/20 transition-all group"
+            className="glass p-8 rounded-lg overflow-hidden relative z-10 hover:border-white/20 transition-all group"
           >
             <div className="mb-6 flex items-center justify-between">
               <div className={`w-12 h-12 rounded-md bg-white/5 flex items-center justify-center ${step.color} group-hover:scale-110 transition-transform`}>

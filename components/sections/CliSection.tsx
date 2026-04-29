@@ -20,7 +20,7 @@ export const CliSection = ({ id }: { id?: string }) => {
               <span className="text-text-primary-text">~</span>
               <span className="text-text-brand-primary">npx create-rst my-masterpiece</span>
             </div>
-            <div className="mt-6 text-text-muted-text animate-pulse">
+            <div className="mt-6 text-text-muted-text">
               <span className="text-text-brand-secondary">✓</span> Resolving dependencies...
             </div>
             <div className="mt-2 text-text-muted-text">

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -15,7 +16,7 @@ export const Hero = () => {
           className="flex-1 space-y-8 text-center lg:text-left"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-text-brand-secondary text-[10px] tracking-widest font-medium uppercase">
-            <span className="flex h-2 w-2 rounded-full bg-text-brand-secondary animate-pulse"></span>
+            <span className="flex h-2 w-2 rounded-full bg-text-brand-secondary"></span>
             AVAILABLE NOW: V2.0
           </div>
           <h1 className="h1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight tracking-tighter text-text-primary-text">
@@ -23,16 +24,20 @@ export const Hero = () => {
             <span className="gradient-text">Enterprise React</span>
           </h1>
           <p className="p text-text-secondary-text text-xl md:w-3/4">
-            RST is a high-fidelity React framework engineered for absolute logic isolation, 
+            RST is a high-fidelity React framework engineered for absolute logic isolation,
             automated routing generation, and zero-boilerplate development.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 pt-6 justify-center lg:justify-start">
-            <Button variant="primary" className="px-8 py-4">
-              INITIALIZE REPOSITORY
-            </Button>
-            <Button variant="glass" className="px-8 py-4 flex items-center gap-2 group">
-              VIEW BLUEPRINTS <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <a href="https://www.npmjs.com/package/create-rst" target="_blank" rel="noopener noreferrer">
+              <Button variant="primary" className="px-8 py-4">
+                INITIALIZE REPOSITORY
+              </Button>
+            </a>
+            <Link href="/documentation">
+              <Button variant="glass" className="px-8 py-4 flex items-center gap-2 group">
+                VIEW BLUEPRINTS <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
         </motion.div>
 

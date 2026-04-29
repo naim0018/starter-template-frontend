@@ -19,9 +19,11 @@ export const Navbar = () => {
         </div>
         <div className="flex items-center gap-6">
           <Terminal className="w-5 h-5 text-text-muted-text hover:text-text-primary-text cursor-pointer transition-colors" />
-          <Button variant="primary" className="px-6 py-2">
-            Get Started
-          </Button>
+          <a href="https://www.npmjs.com/package/create-rst" target="_blank" rel="noopener noreferrer">
+            <Button variant="primary" className="px-6 py-2">
+              Get Started
+            </Button>
+          </a>
         </div>
       </div>
     </nav>
