@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -19,6 +19,29 @@ const sections = [
 ];
 
 export default function DocumentationPage() {
+  const [activeSection, setActiveSection] = useState("intro");
+  const [framework, setFramework] = useState<"react" | "nextjs">("react");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -80% 0px" }
+    );
+
+    sections.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-bg-primary-bg text-text-primary-text font-sans selection:bg-text-brand-primary/30">
       {/* Top Navigation */}
@@ -28,7 +51,7 @@ export default function DocumentationPage() {
           <span className="h6 uppercase tracking-widest font-bold">Back to Site</span>
         </Link>
         <div className="flex items-center gap-2">
-          <span className="text-text-brand-primary text-xl font-bold tracking-tighter">RST</span>
+          <span className="text-text-brand-primary text-xl font-bold tracking-tighter">Basekit</span>
           <span className="text-text-muted-text text-sm font-mono">v2.0.4</span>
         </div>
       </nav>
@@ -41,9 +64,9 @@ export default function DocumentationPage() {
             <button
               key={s.id}
               onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth" })}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-md hover:bg-white/5 transition-all text-text-muted-text hover:text-text-primary-text text-left group"
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-md transition-all text-left group ${activeSection === s.id ? "bg-text-brand-primary/10 text-text-primary-text" : "hover:bg-white/5 text-text-muted-text hover:text-text-primary-text"}`}
             >
-              <s.icon className="w-4 h-4 group-hover:text-text-brand-secondary transition-colors" />
+              <s.icon className={`w-4 h-4 transition-colors ${activeSection === s.id ? "text-text-brand-primary" : "group-hover:text-text-brand-secondary"}`} />
               <span className="text-sm font-medium">{s.title}</span>
             </button>
           ))}
@@ -52,12 +75,27 @@ export default function DocumentationPage() {
         {/* Main Content Area */}
         <main className="flex-1 max-w-4xl space-y-24">
           
+          <div className="flex bg-white/5 p-1 rounded-lg w-fit">
+            <button 
+              onClick={() => setFramework("react")}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${framework === "react" ? "bg-text-brand-primary text-bg-primary-bg shadow-lg" : "text-text-muted-text hover:text-text-primary-text"}`}
+            >
+              React (Vite)
+            </button>
+            <button 
+              onClick={() => setFramework("nextjs")}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${framework === "nextjs" ? "bg-text-brand-primary text-bg-primary-bg shadow-lg" : "text-text-muted-text hover:text-text-primary-text"}`}
+            >
+              Next.js (App Router)
+            </button>
+          </div>
+          
           {/* Introduction */}
           <section id="intro" className="scroll-mt-32">
-            <h1 className="h1 text-6xl mb-8">RST Framework</h1>
+            <h1 className="h1 text-6xl mb-8">Basekit Framework</h1>
             <p className="p text-xl text-text-secondary-text mb-8">
               A high-fidelity, production-grade framework engineered for technical excellence. 
-              RST enforces a strict, token-driven architecture designed to scale seamlessly while maintaining absolute logic isolation.
+              Basekit enforces a strict, token-driven architecture designed to scale seamlessly while maintaining absolute logic isolation across both React and Next.js deployments.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <GlassCard className="p-6">
@@ -84,7 +122,7 @@ export default function DocumentationPage() {
               <p className="text-text-muted-text"># Initialize via NPX</p>
               <div className="flex gap-4">
                 <span className="text-text-brand-secondary">$</span>
-                <span className="text-text-primary-text">npx create-rst@latest my-app</span>
+                <span className="text-text-primary-text">npx create-basekit@latest my-app</span>
               </div>
               <p className="text-text-muted-text pt-4"># Navigate and Start</p>
               <div className="flex gap-4">
@@ -99,38 +137,63 @@ export default function DocumentationPage() {
             <div>
               <h2 className="h2 mb-4">Routing Mastery</h2>
               <p className="p text-text-secondary-text mb-8">
-                RST uses a generator-driven routing system. You define your domain model in <code className="text-text-brand-secondary">src/routes/</code>, and the framework automatically maps them to the URL, Sidebar, and Breadcrumbs.
+                {framework === "nextjs" ? 
+                  "Basekit leverages the native Next.js App Router for file-based routing. You define your pages in the app/ directory using standard Next.js conventions." :
+                  "Basekit supports a generator-driven routing system for React. You define your domain model in src/routes/, and the framework automatically maps them to the URL, Sidebar, and Breadcrumbs."
+                }
               </p>
             </div>
 
-            {/* Case 1 */}
-            <GlassCard className="p-8 space-y-4">
-              <div className="flex justify-between items-center">
-                <h4 className="h3 text-text-brand-primary">Case 01: Basic Sidebar Link</h4>
-                <span className="text-[10px] bg-text-brand-primary/10 text-text-brand-primary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Standard</span>
-              </div>
-              <p className="p text-sm text-text-muted-text">A simple route that appears in the sidebar and navigates to a component.</p>
-              <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
-                <pre className="text-text-secondary-text">
+            {framework === "nextjs" ? (
+              <GlassCard className="p-8 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h4 className="h3 text-text-brand-primary">File-Based Routing</h4>
+                  <span className="text-[10px] bg-text-brand-primary/10 text-text-brand-primary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Next.js</span>
+                </div>
+                <p className="p text-sm text-text-muted-text">Using the App Router, every folder represents a route segment that maps to a URL path.</p>
+                <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
+                  <pre className="text-text-secondary-text">
+{`app/
+  layout.tsx       // Root layout
+  page.tsx         // URL: /
+  dashboard/
+    layout.tsx     // Nested layout for /dashboard
+    page.tsx       // URL: /dashboard
+    settings/
+      page.tsx     // URL: /dashboard/settings`}
+                  </pre>
+                </div>
+              </GlassCard>
+            ) : (
+              <>
+                {/* Case 1 */}
+                <GlassCard className="p-8 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h4 className="h3 text-text-brand-primary">Case 01: Basic Sidebar Link</h4>
+                    <span className="text-[10px] bg-text-brand-primary/10 text-text-brand-primary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Standard</span>
+                  </div>
+                  <p className="p text-sm text-text-muted-text">A simple route that appears in the sidebar and navigates to a component.</p>
+                  <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
+                    <pre className="text-text-secondary-text">
 {`{
   icon: <Users />,       // Icon shown in sidebar
   name: "Employees",     // Name shown in sidebar
   path: "employees",     // URL: /admin/employees
   element: <Employees /> // Component to render
 }`}
-                </pre>
-              </div>
-            </GlassCard>
+                    </pre>
+                  </div>
+                </GlassCard>
 
-            {/* Case 2 */}
-            <GlassCard className="p-8 space-y-4">
-              <div className="flex justify-between items-center">
-                <h4 className="h3 text-text-brand-secondary">Case 02: Nested Layouts (Outlet)</h4>
-                <span className="text-[10px] bg-text-brand-secondary/10 text-text-brand-secondary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Hierarchical</span>
-              </div>
-              <p className="p text-sm text-text-muted-text">Use <code className="text-text-brand-secondary">{"<Outlet />"}</code> to render child routes within a parent layout.</p>
-              <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
-                <pre className="text-text-secondary-text">
+                {/* Case 2 */}
+                <GlassCard className="p-8 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h4 className="h3 text-text-brand-secondary">Case 02: Nested Layouts (Outlet)</h4>
+                    <span className="text-[10px] bg-text-brand-secondary/10 text-text-brand-secondary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Hierarchical</span>
+                  </div>
+                  <p className="p text-sm text-text-muted-text">Use <code className="text-text-brand-secondary">{"<Outlet />"}</code> to render child routes within a parent layout.</p>
+                  <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
+                    <pre className="text-text-secondary-text">
 {`{
   name: "Overview",
   path: "overview",
@@ -140,19 +203,19 @@ export default function DocumentationPage() {
     { name: "Analytics", path: "analytics", element: <Analytics /> }
   ]
 }`}
-                </pre>
-              </div>
-            </GlassCard>
+                    </pre>
+                  </div>
+                </GlassCard>
 
-            {/* Case 3 */}
-            <GlassCard className="p-8 space-y-4">
-              <div className="flex justify-between items-center">
-                <h4 className="h3 text-tertiary">Case 03: Hidden Detail Routes</h4>
-                <span className="text-[10px] bg-tertiary/10 text-tertiary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Advanced</span>
-              </div>
-              <p className="p text-sm text-text-muted-text">Omit the <code className="text-text-brand-secondary">name</code> property to hide a route from the sidebar (e.g., ID-based details).</p>
-              <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
-                <pre className="text-text-secondary-text">
+                {/* Case 3 */}
+                <GlassCard className="p-8 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h4 className="h3 text-tertiary">Case 03: Hidden Detail Routes</h4>
+                    <span className="text-[10px] bg-tertiary/10 text-tertiary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Advanced</span>
+                  </div>
+                  <p className="p text-sm text-text-muted-text">Omit the <code className="text-text-brand-secondary">name</code> property to hide a route from the sidebar (e.g., ID-based details).</p>
+                  <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
+                    <pre className="text-text-secondary-text">
 {`{
   path: "employees",
   element: <Outlet />,
@@ -161,18 +224,18 @@ export default function DocumentationPage() {
     { path: ":id", element: <Details /> } // Hidden from Sidebar
   ]
 }`}
-                </pre>
-              </div>
-            </GlassCard>
-            {/* Case 4 */}
-            <GlassCard className="p-8 space-y-4">
-              <div className="flex justify-between items-center">
-                <h4 className="h3 text-text-brand-primary">Case 04: Infinite Recursive Nesting</h4>
-                <span className="text-[10px] bg-text-brand-primary/10 text-text-brand-primary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Enterprise</span>
-              </div>
-              <p className="p text-sm text-text-muted-text">RST supports infinite nesting. Each child can have its own <code className="text-text-brand-secondary">children</code> array, which the Sidebar Generator will render as multi-level dropdowns.</p>
-              <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
-                <pre className="text-text-secondary-text">
+                    </pre>
+                  </div>
+                </GlassCard>
+                {/* Case 4 */}
+                <GlassCard className="p-8 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h4 className="h3 text-text-brand-primary">Case 04: Infinite Recursive Nesting</h4>
+                    <span className="text-[10px] bg-text-brand-primary/10 text-text-brand-primary px-2 py-1 rounded-md uppercase font-bold tracking-widest">Enterprise</span>
+                  </div>
+                  <p className="p text-sm text-text-muted-text">Basekit supports infinite nesting. Each child can have its own <code className="text-text-brand-secondary">children</code> array, which the Sidebar Generator will render as multi-level dropdowns.</p>
+                  <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs">
+                    <pre className="text-text-secondary-text">
 {`{
   name: "Level 1",
   path: "l1",
@@ -186,47 +249,55 @@ export default function DocumentationPage() {
     }
   ]
 }`}
-                </pre>
-              </div>
-            </GlassCard>
+                    </pre>
+                  </div>
+                </GlassCard>
+              </>
+            )}
           </section>
 
           {/* Performance & Loadable */}
           <section id="performance" className="scroll-mt-32 space-y-8">
             <h2 className="h2 mb-4">Loadable Core (Performance)</h2>
             <p className="p text-text-secondary-text">
-              Every page in RST is lazy-loaded by default using the <code className="text-text-brand-secondary">Loadable</code> HOC. This ensures the initial bundle size remains minimal even as the project grows to hundreds of routes.
+              {framework === "nextjs" ? 
+                "Next.js handles code-splitting automatically. Basekit leverages Server Components to keep the client bundle size minimal." : 
+                "For Vite/React deployments, every page in Basekit is lazy-loaded by default using the Loadable HOC to keep initial bundles minimal."}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h4 className="h4 text-text-primary-text font-bold uppercase tracking-tighter">The HOC Pattern</h4>
-                <p className="p text-sm text-text-muted-text leading-relaxed">
-                  The Loadable component wraps <code className="text-white">React.lazy()</code> in a <code className="text-white">Suspense</code> boundary. You can pass a custom Skeleton fallback per page to maintain visual stability during transitions.
-                </p>
-              </div>
-              <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs overflow-hidden">
-                <pre className="text-text-brand-secondary">
+            {framework === "react" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h4 className="h4 text-text-primary-text font-bold uppercase tracking-tighter">The HOC Pattern</h4>
+                  <p className="p text-sm text-text-muted-text leading-relaxed">
+                    The Loadable component wraps <code className="text-white">React.lazy()</code> in a <code className="text-white">Suspense</code> boundary. You can pass a custom Skeleton fallback per page to maintain visual stability during transitions.
+                  </p>
+                </div>
+                <div className="bg-[#010205] p-6 rounded-lg border border-white/5 font-mono text-xs overflow-hidden">
+                  <pre className="text-text-brand-secondary">
 {`// src/utils/Loadable.tsx
 const Loadable = (Component, Fallback = PageSkeleton) => (props) => (
   <Suspense fallback={<Fallback />}>
     <Component {...props} />
   </Suspense>
 );`}
-                </pre>
+                  </pre>
+                </div>
               </div>
-            </div>
+            )}
           </section>
 
           {/* Generator Core */}
           <section id="generators" className="scroll-mt-32">
             <h2 className="h2 mb-8">Generator Core</h2>
             <p className="p text-text-secondary-text mb-8">
-              RST provides a suite of automated utilities in <code className="text-text-brand-secondary">src/utils/Generator/</code>. 
-              These utilities consume your route config to drive the UI dynamically.
+              {framework === "nextjs" ?
+                "Basekit Next.js reads the App Router config directly. We provide automated utilities for Menus and Breadcrumbs that hook into Next's navigation." :
+                "Basekit provides a suite of automated utilities in src/utils/Generator/ for React projects. These utilities consume your route config to drive the UI dynamically."
+              }
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { title: "Routes", desc: "Maps nested configs to React Router v7 objects." },
+                { title: "Routes", desc: framework === "nextjs" ? "File-based structure via App Router." : "Maps nested configs to React Router v7 objects." },
                 { title: "Menus", desc: "Builds recursive sidebar items with active states." },
                 { title: "Breadcrumbs", desc: "Flattens tree routes for linear path indicators." },
               ].map((g) => (
@@ -275,7 +346,7 @@ const Loadable = (Component, Fallback = PageSkeleton) => (props) => (
               <Shield className="text-text-brand-primary w-8 h-8" /> API Intelligence
             </h2>
             <p className="p text-text-secondary-text mb-8">
-              RST integrates RTK Query with automated cache invalidation. Use the <code className="text-text-brand-secondary">providesTags</code> and <code className="text-text-brand-secondary">invalidatesTags</code> 
+              Basekit integrates RTK Query with automated cache invalidation. Use the <code className="text-text-brand-secondary">providesTags</code> and <code className="text-text-brand-secondary">invalidatesTags</code> 
               properties to ensure your UI is always synchronized with the server.
             </p>
             <GlassCard className="p-8 bg-text-brand-primary/[0.02]">
@@ -301,7 +372,7 @@ providesTags: (result) =>
             <div className="p-12 rounded-2xl bg-gradient-to-br from-text-brand-primary/5 via-transparent to-text-brand-secondary/5 border border-white/10 text-center">
               <h2 className="h2 mb-6 text-text-primary-text">Architectural Sovereignty</h2>
               <p className="p text-text-secondary-text max-w-2xl mx-auto leading-relaxed mb-12">
-                RST is not just a template; it is a philosophy of **Architectural Sovereignty**. 
+                Basekit is not just a template; it is a philosophy of **Architectural Sovereignty**. 
                 It empowers developers to build complex enterprise applications by providing a rigid structure that paradoxically offers absolute freedom of logic. 
                 By isolating state, optimizing rendering paths, and automating the mundane, we allow you to focus on what matters: the user experience.
               </p>
@@ -322,7 +393,7 @@ providesTags: (result) =>
 
           {/* Footer */}
           <footer className="pt-20 border-t border-white/5 flex justify-between items-center text-text-muted-text text-sm">
-            <p>© 2024 RST Framework Core. MIT Licensed.</p>
+            <p>© 2024 Basekit Framework Core. MIT Licensed.</p>
             <div className="flex gap-6">
               <a href="#" className="hover:text-text-brand-primary transition-colors">GitHub</a>
               <a href="#" className="hover:text-text-brand-primary transition-colors">Support</a>

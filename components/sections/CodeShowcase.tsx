@@ -92,30 +92,37 @@ const normalizeRoutes = (routes: RouteItem[]): RouteObject[] => {
 
 export const CodeShowcase = () => {
   const [activeTab, setActiveTab] = React.useState("Admin Route");
+  
+  const currentSnippet = codeSnippets[activeTab] || codeSnippets["Admin Route"];
 
   return (
-    <div className="w-full glass rounded-lg overflow-hidden border border-white/10 flex flex-col md:flex-row h-[500px] scrollbar-hide">
+    <div className="w-full glass rounded-lg overflow-hidden border border-white/10 flex flex-col md:flex-row h-[600px] scrollbar-hide">
       {/* Sidebar Tabs */}
       <div className="w-full md:w-64 border-r border-white/10 bg-slate-950/30 flex flex-col p-4 gap-2 overflow-y-auto scrollbar-hide">
-        {Object.keys(codeSnippets).map((key) => (
+        <div className="text-[10px] uppercase tracking-widest text-text-muted-text font-bold mb-2 px-4 pt-2 flex items-center gap-2">
+          React Vite
+        </div>
+        {Object.keys(codeSnippets).map((key) => {
+          const isActive = (codeSnippets[activeTab] ? activeTab : "Admin Route") === key;
+          return (
           <button
             key={key}
             onClick={() => setActiveTab(key)}
             className={`flex items-center gap-3 px-4 py-3 rounded-md transition-all text-left relative group
-              ${activeTab === key ? "bg-white/5 text-text-brand-secondary" : "text-text-muted-text hover:text-text-primary-text hover:bg-white/5"}`}
+              ${isActive ? "bg-white/5 text-text-brand-secondary" : "text-text-muted-text hover:text-text-primary-text hover:bg-white/5"}`}
           >
-            {activeTab === key && (
+            {isActive && (
               <span className="absolute left-0 top-1/4 bottom-1/4 w-[3px] bg-text-brand-secondary rounded-full" />
             )}
             <span className="h6 uppercase tracking-wider text-[10px] font-bold">{key}</span>
           </button>
-        ))}
+        )})}
       </div>
 
       {/* Code Area */}
       <div className="flex-1 bg-[#03050a] p-8 text-left font-mono relative overflow-auto scrollbar-hide">
         <div className="flex justify-between items-center mb-6">
-          <span className="text-text-muted-text text-[10px] uppercase tracking-widest">{codeSnippets[activeTab].name}</span>
+          <span className="text-text-muted-text text-[10px] uppercase tracking-widest">{currentSnippet.name}</span>
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
@@ -123,7 +130,7 @@ export const CodeShowcase = () => {
           </div>
         </div>
         <pre className="text-sm text-text-secondary-text leading-relaxed">
-          <code>{codeSnippets[activeTab].code}</code>
+          <code>{currentSnippet.code}</code>
         </pre>
       </div>
     </div>
