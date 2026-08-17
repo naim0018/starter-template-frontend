@@ -18,7 +18,7 @@ export const CliSection = ({ id }: { id?: string }) => {
             <div className="flex gap-4">
               <span className="text-text-brand-secondary">➜</span>
               <span className="text-text-primary-text">~</span>
-              <span className="text-text-brand-primary">npx create-rst my-masterpiece</span>
+              <span className="text-text-brand-primary">npx create-basekit my-masterpiece</span>
             </div>
             <div className="mt-6 text-text-muted-text">
               <span className="text-text-brand-secondary">✓</span> Resolving dependencies...

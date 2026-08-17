@@ -8,7 +8,7 @@ export const Navbar = () => {
     <nav className="fixed top-0 w-full border-b border-white/10 bg-slate-950/70 backdrop-blur-xl z-50">
       <div className="flex justify-between items-center h-16 w-full max-w-[1400px] mx-auto">
         <div className="flex items-center gap-2">
-          <span className="text-xl font-semibold tracking-tighter text-text-primary-text">DevCrystal</span>
+          <span className="text-xl font-semibold tracking-tighter text-text-primary-text">Basekit</span>
         </div>
         <div className="hidden md:flex items-center gap-12">
           <a className="text-text-brand-primary border-b-2 border-bg-brand-primary h6" href="#hero">Platform</a>

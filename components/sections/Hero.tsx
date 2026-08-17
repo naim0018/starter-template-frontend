@@ -21,14 +21,14 @@ export const Hero = () => {
           </div>
           <h1 className="h1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight tracking-tighter text-text-primary-text">
             The Blueprint for <br />
-            <span className="gradient-text">Enterprise React</span>
+            <span className="gradient-text">React & Next.js</span>
           </h1>
           <p className="p text-text-secondary-text text-xl md:w-3/4">
-            RST is a high-fidelity React framework engineered for absolute logic isolation,
+            Basekit is a high-fidelity React & Next.js framework engineered for absolute logic isolation,
             automated routing generation, and zero-boilerplate development.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 pt-6 justify-center lg:justify-start">
-            <a href="https://www.npmjs.com/package/create-rst" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.npmjs.com/package/create-basekit" target="_blank" rel="noopener noreferrer">
               <Button variant="primary" className="px-8 py-4">
                 INITIALIZE REPOSITORY
               </Button>
@@ -59,7 +59,7 @@ export const Hero = () => {
                 <span className="text-text-brand-primary">import</span>
                 <span className="text-text-primary-text">{"{ Masterpiece }"}</span>
                 <span className="text-text-brand-primary">from</span>
-                <span className="text-text-brand-secondary">&quot;@rst/core&quot;</span>
+                <span className="text-text-brand-secondary">&quot;@basekit/core&quot;</span>
               </div>
               <div className="flex gap-4">
                 <span className="text-text-brand-secondary opacity-50">2</span>
